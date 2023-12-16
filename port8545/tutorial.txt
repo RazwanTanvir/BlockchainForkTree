@@ -1,0 +1,54 @@
+Tutorial-https://geth.ethereum.org/docs/getting-started
+
+0x47812b93746f9CA4D6030C8eaDc8BA49844744e3
+0xD9EfB992751BC5D0A492858B088B688aa1ed82eB
+
+
+clef newaccount --keystore geth-tutorial/keystore
+
+clef --keystore geth-tutorial/keystore --configdir geth-tutorial/clef --chainid 11155111
+
+geth --sepolia --datadir geth-tutorial --authrpc.addr localhost --authrpc.port 8551 --authrpc.vhosts localhost --authrpc.jwtsecret geth-tutorial/jwtsecret --http --http.api eth,net --signer=geth-tutorial/clef/clef.ipc --http
+
+
+web3.fromWei(eth.getBalance('0xD9EfB992751BC5D0A492858B088B688aa1ed82eB'), 'ether');
+
+
+
+Start with miner:
+geth --datadir=./datadir --allow-insecure-unlock --http --http.api "eth,net,web3,personal" --http.corsdomain "*" --http.addr "0.0.0.0" --http.port 8545 --networkid 1234 --nodiscover --ipcdisable --nat "any" --miner.etherbase "0x163f57598de9cc708e9497aa50b6d5e5ed368d02" --mine console
+
+
+
+Send tx from geth console works!
+Send TX:
+web3.eth.sendTransaction({from: "0x15a1c9f7ae8f8f3176805316c2bacc99af3d6f5b", 
+to: "0x163f57598de9cc708e9497aa50b6d5e5ed368d02", value: web3.toWei("0.00010", "ether")});
+
+web3.eth.sendTransaction({from: "0x15a1c9f7ae8f8f3176805316c2bacc99af3d6f5b", 
+to: "0x95008154b6917e1b9acc22c850aea5e82a79c212", value: web3.toWei("0.00010", "ether")});
+
+
+web3.eth.sendTransaction({from: "0x163f57598de9cc708e9497aa50b6d5e5ed368d02", 
+to: "0x95008154b6917e1b9acc22c850aea5e82a79c212", value: web3.toWei("0.00010", "ether")});
+
+This will return txhash.
+
+eth.getTransaction("0xc2399887295efaf67a212252d6a0b5b36dc8e2c225e3b26856490f1988ab1acc"); txHash
+
+eth.getBalance("0x95008154b6917E1b9ACC22c850aea5e82A79c212");
+
+
+geth --datadir=./data --allow-insecure-unlock --http --http.api "eth,net,web3,personal" --http.corsdomain "*" --http.addr "0.0.0.0" --http.port 8545 --networkid 112233445566--nodiscover --ipcdisable --nat "any" --miner.etherbase "0x163f57598de9cc708e9497aa50b6d5e5ed368d02" --mine console
+
+
+
+geth --datadir=./data --allow-insecure-unlock --http --http.api "eth,net,web3,personal" --http.corsdomain "*" --http.addr "0.0.0.0" --http.port 8546 --networkid 112233445566 --nodiscover --ipcdisable --nat "any" --miner.etherbase "0x163f57598de9cc708e9497aa50b6d5e5ed368d02" --mine console
+
+--------------------------------
+Final command (07/28/2023)
+geth --datadir=./datadir --allow-insecure-unlock --http --http.api "eth,net,web3,personal" --http.corsdomain "*" --http.addr "0.0.0.0" --http.port 8545 --networkid 112233445566 --nodiscover --ipcdisable --nat "any" --miner.etherbase "0x163f57598de9cc708e9497aa50b6d5e5ed368d02" --mine console
+
+geth --datadir=./datadir --allow-insecure-unlock --http --http.api "eth,net,web3,personal" --http.corsdomain "*" --http.addr "0.0.0.0" --http.port 8546 --networkid 778899 --nodiscover --ipcdisable --nat "any" --miner.etherbase "0xd26ea6b5b6f1b3d7e6f0dbe55342a9f901429b51" --port 30304 --authrpc.port 8552 --mine console
+
+miner.start()

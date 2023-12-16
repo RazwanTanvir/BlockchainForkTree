@@ -1,0 +1,24 @@
+eth.accounts
+miner.start()
+miner.stop()
+eth.accounts
+eth.getBalance("0xd26ea6b5b6f1b3d7e6f0dbe55342a9f901429b51");
+miner.start()
+miner.stop()
+eth.getBalance("0xd26ea6b5b6f1b3d7e6f0dbe55342a9f901429b51");
+miner.start()
+miner.stop()
+eth.getBalance("0xd26ea6b5b6f1b3d7e6f0dbe55342a9f901429b51");
+eth.accounts
+miner.start()
+miner.stop()
+eth.accounts
+miner.start()
+web3.eth.sendTransaction({
+  'to': '0x96415A3470C516557DC8ac467e5aFD7d585456Ff',
+  'from': '0xD26EA6B5b6F1b3D7E6f0DBE55342A9F901429B51',
+  'value': 250
+})
+miner.start()
+eth.accounts
+miner.start()

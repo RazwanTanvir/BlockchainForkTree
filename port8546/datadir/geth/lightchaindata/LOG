@@ -1,0 +1,32 @@
+=============== Jun 9, 2023 (CDT) ===============
+12:56:16.710957 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+12:56:16.786361 db@open opening
+12:56:16.787023 version@stat F·[] S·0B[] Sc·[]
+12:56:16.820096 db@janitor F·2 G·0
+12:56:16.820096 db@open done T·33.7344ms
+12:56:17.563380 db@close closing
+12:56:17.563978 db@close done T·597.6µs
+=============== Jun 18, 2023 (CDT) ===============
+23:43:42.984808 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:43:43.039605 version@stat F·[] S·0B[] Sc·[]
+23:43:43.040132 db@open opening
+23:43:43.040971 journal@recovery F·1
+23:43:43.050293 journal@recovery recovering @1
+23:43:43.125766 memdb@flush created L0@2 N·14 S·1KiB "\x06+\xe9..\xe6O\x96,v2":"\xed\x05T.. \x8bd,v1"
+23:43:43.128527 version@stat F·[1] S·1KiB[1KiB] Sc·[0.25]
+23:43:43.242541 db@janitor F·3 G·0
+23:43:43.242617 db@open done T·202.3537ms
+23:43:43.691878 db@close closing
+23:43:43.692568 db@close done T·775.3µs
+=============== Jul 11, 2023 (CDT) ===============
+21:09:47.766996 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+21:09:47.824850 version@stat F·[1] S·1KiB[1KiB] Sc·[0.25]
+21:09:47.824850 db@open opening
+21:09:47.825851 journal@recovery F·1
+21:09:47.826769 journal@recovery recovering @3
+21:09:47.893918 memdb@flush created L0@5 N·1 S·322B "eth..\xe2Xc,v16":"eth..\xe2Xc,v16"
+21:09:47.897919 version@stat F·[2] S·1KiB[1KiB] Sc·[0.50]
+21:09:48.020874 db@janitor F·4 G·0
+21:09:48.020874 db@open done T·196.0241ms
+21:09:48.576981 db@close closing
+21:09:48.576981 db@close done T·0s
