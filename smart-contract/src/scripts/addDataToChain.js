@@ -61,7 +61,7 @@ async function addDataToBlockchain(blockchainAddress, contractAddress, dataFileP
     try {
         const web3 = new Web3(blockchainAddress);
         
-        const contractAbi = JSON.parse(fs.readFileSync('./build/Contracts/BlockData.abi'));
+        const contractAbi = JSON.parse(fs.readFileSync('./smart-contract/build/contracts_abi_bin/BlockData.abi'));
 
         const contract = new web3.eth.Contract(contractAbi, contractAddress);
         
@@ -85,11 +85,11 @@ async function addDataToBlockchain(blockchainAddress, contractAddress, dataFileP
             console.log(`Data point added: ${_networkId}, ${_portNumber}, ${_data}`);
         }
 
-        const dataAt = 2;
-        contract.methods.getDataPointByIndex(dataAt).call(function(err, res){
-            console.log("Data Point At BlockNumber- " + dataAt + ":");
-            console.log(res);
-        });
+        // const dataAt = 2;
+        // await contract.methods.getDataPointByIndex(dataAt).call(function(err, res){
+        //     console.log("Data Point At BlockNumber- " + dataAt + ":");
+        //     console.log(res);
+        // });
 
     } catch (error) {
         console.error("Error interacting with the contract:", error);
@@ -98,23 +98,41 @@ async function addDataToBlockchain(blockchainAddress, contractAddress, dataFileP
 
 // const contractAddress = require('./deploy_repo_blockchain_contract');
 // console.log("Exported Contract address: " + contractAddress);
+const dataFilePath = './smart-contract/src/scripts/dataPoints.json';
+const deployedContractsFile = './smart-contract/src/scripts/contractInfo.json';
 
-const blockchainAddress1 = 'http://localhost:8545';
-const contractAddress1 = '0x76428ba0Fb2e0977567795ACCeE0c23bf339d024'; // Contract Address for Blockchain 1
-const dataFilePath1 = './src/scripts/dataPoints.json';
+const jsonData = fs.readFileSync(deployedContractsFile);
+const contractsInfo = JSON.parse(jsonData);
+for (const contractInfo of contractsInfo) {
+    // Destructure values from the data point object
+    const { web3Provider, contractAddress } = contractInfo;
+    const blockchainAddress1 = web3Provider;
+    const contractAddress1 = contractAddress; // Contract Address for Blockchain 1
+    const dataFilePath1 = dataFilePath;
 
-const blockchainAddress2 = 'http://localhost:8546'; // Replace with the address of your different Ethereum node
-const contractAddress2 = '0x747a6c843dA41677436D3e77168Db9dB16C27e26'; // Replace with the contract address on the different blockchain
-const dataFilePath2 = './src/scripts/dataPoints.json';
+    addDataToBlockchain(blockchainAddress1, contractAddress1, dataFilePath1).then(
+        console.log(contractAddress1)
+    );
+    console.log(`Json data: : ${web3Provider}, ${contractAddress}`);
+}
 
-const blockchainAddress3 = 'http://localhost:8547'; // Replace with the address of your different Ethereum node
-const contractAddress3 = '0x34b4C499D8Ec8149A44a01844854b936aEcF0875'; // Replace with the contract address on the different blockchain
-const dataFilePath3 = './src/scripts/dataPoints.json';
 
-// Interact with the first blockchain
-addDataToBlockchain(blockchainAddress1, contractAddress1, dataFilePath1).then(
-    console.log(contractAddress1)
-);
+// const blockchainAddress1 = 'http://localhost:8546';
+// const contractAddress1 = '0x0FA333A3bdd5f16eC8e856C3049b358B23E322Ac'; // Contract Address for Blockchain 1
+// const dataFilePath1 = dataFilePath;
+
+// const blockchainAddress2 = 'http://localhost:8547'; // Replace with the address of your different Ethereum node
+// const contractAddress2 = '0x7b731b8e619aaee8752921cbC5780a9D2B725a7A'; // Replace with the contract address on the different blockchain
+// const dataFilePath2 = dataFilePath;
+
+// const blockchainAddress3 = 'http://localhost:8548'; // Replace with the address of your different Ethereum node
+// const contractAddress3 = '0xd2DC49da36557035D22e3FDd08CF06F3bF37Db76'; // Replace with the contract address on the different blockchain
+// const dataFilePath3 = dataFilePath;
+
+// // Interact with the first blockchain
+// addDataToBlockchain(blockchainAddress1, contractAddress1, dataFilePath1).then(
+//     console.log(contractAddress1)
+// );
 
 // // Interact with the second blockchain
 // addDataToBlockchain(blockchainAddress2, contractAddress2, dataFilePath2);

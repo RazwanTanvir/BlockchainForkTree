@@ -1,6 +1,6 @@
 {
   "config": {
-    "chainId": 33,
+    "chainId": 998877,
     "eip155Block": 0,
     "eip158Block": 0,
     "eip150Block": 0,
@@ -10,10 +10,10 @@
     "ethash": {}
   },
   "alloc": {
-   "0xF01cA47D01714a87382df244168CaC6eE98B9435": {
+   "0xd27972f889cb55d5dc117b8445d93387fbde4459": {
       "balance": "100000000000000000000" 
     },
-    "0x7F0980a9108E90979dA2367a4DE0683A879792A1": {
+    "0x2b6e9197712c15acf23e5c2b3eccfe3ab41cf04d": {
       "balance": "200000000000000000000" 
     }
   },

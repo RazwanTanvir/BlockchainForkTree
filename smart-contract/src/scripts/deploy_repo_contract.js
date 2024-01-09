@@ -5,12 +5,12 @@ const fs = require('fs');
 
 const contractAddressList= {};
 
-async function deployContract(web3Provider, accountPassword) {
+async function deployRepoContract(web3Provider, accountPassword) {
     try {
         const web3 = new Web3(web3Provider);
 
-        const bytecode = fs.readFileSync('./build/Contracts/BlockData.bin').toString();
-        const abi = JSON.parse(fs.readFileSync('./build/Contracts/BlockData.abi'));
+        const bytecode = fs.readFileSync('./smart-contract/build/contracts_abi_bin/storeforkevent.bin').toString();
+        const abi = JSON.parse(fs.readFileSync('./smart-contract/build/contracts_abi_bin/storeforkevent.abi'));
 
         // Unlock the account for deployment
         const accounts = await web3.eth.getAccounts();
@@ -21,6 +21,16 @@ async function deployContract(web3Provider, accountPassword) {
         const deployment = contract.deploy({ data: bytecode });
         const gas = await deployment.estimateGas();
         const instance = await deployment.send({ from: accounts[0], gas: gas });
+
+        var deployedContract = []
+        const contractInfo = {
+            web3Provider: web3Provider,
+            contractAddress: instance.options.address
+        };
+        deployedContract.push(contractInfo);
+
+        const jsonString = JSON.stringify(deployedContract, null, 2);
+        fs.writeFileSync('./smart-contract/src/scripts/repoContractInfo.json', jsonString, 'utf-8');
 
         // contractAddressList[web3Provider] = instance.options.address;
         console.log("Contract deployed at address for (" + web3Provider + "): ", instance.options.address);
@@ -35,16 +45,4 @@ async function deployContract(web3Provider, accountPassword) {
 const web3Provider = 'http://localhost:8545'; // Replace with the address of your different Ethereum node
 const accountPassword = '1234567890'; // Replace with the password for the account
 
-const addr1 = deployContract(web3Provider, accountPassword);
-
-
-const web3Provider1 = 'http://localhost:8546'; // Replace with the address of your different Ethereum node
-const accountPassword1 = '1234567890'; // Replace with the password for the account
-deployContract(web3Provider1, accountPassword1);
-
-const web3Provider2 = 'http://localhost:8547'; // Replace with the address of your different Ethereum node
-const accountPassword2 = '1234567890'; // Replace with the password for the account
-deployContract(web3Provider2, accountPassword2);
-
-
-module.exports = addr1;
+const addr1 = deployRepoContract(web3Provider, accountPassword);
