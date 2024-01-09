@@ -1,0 +1,18 @@
+[
+    {
+      "networkId": 33,
+      "parentNetworkId": 22,
+      "forkBlockNumber": 2
+    },
+    {
+      "networkId": 998877,
+      "parentNetworkId": 33,
+      "forkBlockNumber": 1
+    },
+    {
+      "networkId": 9999,
+      "parentNetworkId": 33,
+      "forkBlockNumber": 3
+    }
+  ]
+  

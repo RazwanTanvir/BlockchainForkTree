@@ -1,0 +1,14 @@
+[
+  {
+    "web3Provider": "http://localhost:8546",
+    "contractAddress": "0x0Db6a1f87903c62427aF2470BBD2FD3a944033d6"
+  },
+  {
+    "web3Provider": "http://localhost:8547",
+    "contractAddress": "0x6B17239d02f2E0d2DaEE3Ed7c279b92D936A73F6"
+  },
+  {
+    "web3Provider": "http://localhost:8548",
+    "contractAddress": "0x11Fb18e4bEEecd473E9bd8deEa294110B7883120"
+  }
+]
