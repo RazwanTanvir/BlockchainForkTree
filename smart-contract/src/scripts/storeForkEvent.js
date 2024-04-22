@@ -35,13 +35,23 @@ async function addForkEvent(blockchainAddress, portNumber, contractAddress, data
     }
 }
 
-const blockchainAddress = 'http://localhost:8545';
-const contractAddress = '0x359d49F7090E6e3E6e119e1CbAcFDdc21209766f'; // Contract Address for Blockchain 1
+// const blockchainAddress = 'http://localhost:8545';
+// const contractAddress = '0x76428ba0Fb2e0977567795ACCeE0c23bf339d024'; // Contract Address for Blockchain 1
 
-// const jsonData = fs.readFileSync(deployedContractsFile);
-// const contractsInfo = JSON.parse(jsonData);
 
-addForkEvent(blockchainAddress, 8545, contractAddress, './smart-contract/src/scripts/forkdata.json');
+const deployedContractsFile = './smart-contract/src/scripts/repoContractInfo.json';
+const jsonData = fs.readFileSync(deployedContractsFile);
+const contractsInfo = JSON.parse(jsonData);
+
+for (const contractInfo of contractsInfo) {
+    // Destructure values from the contractInfo object
+    const { web3Provider, contractAddress } = contractInfo;
+    console.log(web3Provider + ' : '+ contractAddress);
+
+    addForkEvent(web3Provider, 8545, contractAddress, './smart-contract/src/scripts/forkdata.json');
+}
+
+
 
 
 
