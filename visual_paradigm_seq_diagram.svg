@@ -1,0 +1,257 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 1240" width="100%" height="100%">
+  <defs>
+    <!-- Visual Paradigm Blue Gradient for Participant Boxes -->
+    <linearGradient id="vpParticipantGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#E8F1FC"/>
+      <stop offset="100%" stop-color="#C5DCF5"/>
+    </linearGradient>
+
+    <!-- Activation Bar Gradient -->
+    <linearGradient id="vpActivationGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#E1EEFA"/>
+    </linearGradient>
+
+    <!-- Solid Arrowhead for Synchronous Messages -->
+    <marker id="vpSolidArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#1C4B82"/>
+    </marker>
+
+    <!-- Open Arrowhead for Return Messages -->
+    <marker id="vpOpenArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 1 L 10 5 L 0 9" fill="none" stroke="#2B6CB0" stroke-width="1.6"/>
+    </marker>
+
+    <!-- Drop Shadow for Visual Paradigm Look -->
+    <filter id="vpDropShadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="2" dy="2" stdDeviation="2.5" flood-color="#000000" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <style>
+    .vp-frame { fill: #FFFFFF; stroke: #2E6B9E; stroke-width: 1.5; }
+    .vp-frame-header { fill: #E3EFFB; stroke: #2E6B9E; stroke-width: 1.5; }
+    .vp-title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; font-weight: bold; fill: #0F3460; }
+    .vp-participant-box { fill: url(#vpParticipantGrad); stroke: #2563EB; stroke-width: 1.5; filter: url(#vpDropShadow); }
+    .vp-participant-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; font-weight: bold; fill: #0B2948; text-anchor: middle; }
+    .vp-lifeline { stroke: #6B8FB5; stroke-width: 1.2; stroke-dasharray: 6,4; }
+    .vp-activation { fill: url(#vpActivationGrad); stroke: #2563EB; stroke-width: 1.2; }
+    .vp-msg-sync { stroke: #1C4B82; stroke-width: 1.4; marker-end: url(#vpSolidArrow); }
+    .vp-msg-reply { stroke: #2B6CB0; stroke-width: 1.3; stroke-dasharray: 5,3; marker-end: url(#vpOpenArrow); }
+    .vp-msg-self { stroke: #1C4B82; stroke-width: 1.4; fill: none; marker-end: url(#vpSolidArrow); }
+    .vp-msg-label { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; fill: #0F2D4A; }
+    .vp-note-box { fill: #FEFBEA; stroke: #D4BE6A; stroke-width: 1.2; filter: url(#vpDropShadow); }
+    .vp-note-fold { fill: #EFE4A9; stroke: #D4BE6A; stroke-width: 1.2; }
+    .vp-note-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; font-weight: bold; fill: #5A4A10; }
+    .vp-actor-line { stroke: #2563EB; stroke-width: 1.6; fill: none; }
+    .vp-actor-head { stroke: #2563EB; stroke-width: 1.6; fill: #E8F1FC; }
+  </style>
+
+  <!-- Background Canvas -->
+  <rect x="0" y="0" width="1100" height="1240" fill="#FFFFFF"/>
+
+  <!-- Visual Paradigm Outer Frame -->
+  <rect x="15" y="15" width="1070" height="1210" class="vp-frame" rx="3" ry="3"/>
+
+  <!-- Frame Header Tab -->
+  <path d="M 15 15 L 340 15 L 355 33 L 355 45 L 15 45 Z" class="vp-frame-header"/>
+  <text x="28" y="34" class="vp-title">sd End-to-End Orchestrated Workflow</text>
+
+  <!-- ==================== PARTICIPANTS (TOP) ==================== -->
+
+  <!-- Lifeline 1: Node Operator Actor (X = 110) -->
+  <g transform="translate(110, 52)">
+    <circle cx="0" cy="18" r="9" class="vp-actor-head"/>
+    <line x1="0" y1="27" x2="0" y2="44" class="vp-actor-line"/>
+    <line x1="-12" y1="33" x2="12" y2="33" class="vp-actor-line"/>
+    <line x1="0" y1="44" x2="-10" y2="58" class="vp-actor-line"/>
+    <line x1="0" y1="44" x2="10" y2="58" class="vp-actor-line"/>
+    <text x="0" y="74" class="vp-participant-text">operator : NodeOperator</text>
+  </g>
+
+  <!-- Lifeline 2: Client Application (X = 330) -->
+  <rect x="245" y="66" width="170" height="42" rx="4" ry="4" class="vp-participant-box"/>
+  <text x="330" y="92" class="vp-participant-text">client : ClientApplication</text>
+
+  <!-- Lifeline 3: Root Blockchain Node (X = 550) -->
+  <rect x="465" y="66" width="170" height="42" rx="4" ry="4" class="vp-participant-box"/>
+  <text x="550" y="92" class="vp-participant-text">rootNode : RootBlockchain</text>
+
+  <!-- Lifeline 4: Metadata Registry Contract (X = 770) -->
+  <rect x="680" y="66" width="180" height="42" rx="4" ry="4" class="vp-participant-box"/>
+  <text x="770" y="92" class="vp-participant-text">registry : MetadataBlockchain</text>
+
+  <!-- Lifeline 5: Forked Blockchain Node (X = 970) -->
+  <rect x="885" y="66" width="170" height="42" rx="4" ry="4" class="vp-participant-box"/>
+  <text x="970" y="92" class="vp-participant-text">forkNode : ForkedBlockchain</text>
+
+  <!-- ==================== VERTICAL LIFELINES ==================== -->
+  <line x1="110" y1="135" x2="110" y2="1160" class="vp-lifeline"/>
+  <line x1="330" y1="115" x2="330" y2="1160" class="vp-lifeline"/>
+  <line x1="550" y1="115" x2="550" y2="1160" class="vp-lifeline"/>
+  <line x1="770" y1="115" x2="770" y2="1160" class="vp-lifeline"/>
+  <line x1="970" y1="115" x2="970" y2="1160" class="vp-lifeline"/>
+
+  <!-- ==================== PHASE 1: NETWORK INITIALIZATION ==================== -->
+  <g transform="translate(45, 140)">
+    <polygon points="0,0 210,0 225,15 225,32 0,32" class="vp-note-box"/>
+    <polygon points="210,0 210,15 225,15" class="vp-note-fold"/>
+    <text x="14" y="21" class="vp-note-text">Phase 1: Network Initialization</text>
+  </g>
+
+  <!-- 1: operator -> rootNode: startNode() -->
+  <line x1="110" y1="195" x2="544" y2="195" class="vp-msg-sync"/>
+  <text x="180" y="188" class="vp-msg-label">1: startNode()</text>
+
+  <!-- rootNode Activation 1 -->
+  <rect x="544" y="195" width="12" height="45" class="vp-activation"/>
+
+  <!-- 2: rootNode -> operator: nodeReady() -->
+  <line x1="544" y1="230" x2="110" y2="230" class="vp-msg-reply"/>
+  <text x="180" y="223" class="vp-msg-label">2: nodeReady()</text>
+
+  <!-- 3: operator -> client: triggerDeployment() -->
+  <line x1="110" y1="265" x2="324" y2="265" class="vp-msg-sync"/>
+  <text x="140" y="258" class="vp-msg-label">3: triggerDeployment()</text>
+
+  <!-- Client Activation 1 -->
+  <rect x="324" y="265" width="12" height="240" class="vp-activation"/>
+
+  <!-- ==================== PHASE 2: REGISTRY DEPLOYMENT ==================== -->
+  <g transform="translate(45, 305)">
+    <polygon points="0,0 230,0 245,15 245,32 0,32" class="vp-note-box"/>
+    <polygon points="230,0 230,15 245,15" class="vp-note-fold"/>
+    <text x="14" y="21" class="vp-note-text">Phase 2: Registry Contract Deployment</text>
+  </g>
+
+  <!-- 4: client -> rootNode: getAccounts() -->
+  <line x1="336" y1="350" x2="544" y2="350" class="vp-msg-sync"/>
+  <text x="360" y="343" class="vp-msg-label">4: getAccounts()</text>
+
+  <!-- rootNode Activation 2 -->
+  <rect x="544" y="350" width="12" height="35" class="vp-activation"/>
+  <line x1="544" y1="380" x2="336" y2="380" class="vp-msg-reply"/>
+  <text x="360" y="373" class="vp-msg-label">5: return accounts</text>
+
+  <!-- 6: client -> rootNode: deployContract -->
+  <line x1="336" y1="410" x2="544" y2="410" class="vp-msg-sync"/>
+  <text x="360" y="403" class="vp-msg-label">6: deployContract(bytecode)</text>
+
+  <!-- rootNode Activation 3 -->
+  <rect x="544" y="410" width="12" height="85" class="vp-activation"/>
+
+  <!-- 7: rootNode -> registry: constructor -->
+  <line x1="556" y1="435" x2="764" y2="435" class="vp-msg-sync"/>
+  <text x="585" y="428" class="vp-msg-label">7: &lt;&lt;create&gt;&gt; constructor()</text>
+
+  <!-- registry Activation 1 -->
+  <rect x="764" y="435" width="12" height="35" class="vp-activation"/>
+  <line x1="764" y1="465" x2="556" y2="465" class="vp-msg-reply"/>
+  <text x="585" y="458" class="vp-msg-label">8: contractAddress</text>
+
+  <!-- 9: rootNode -> client: receipt -->
+  <line x1="544" y1="495" x2="336" y2="495" class="vp-msg-reply"/>
+  <text x="360" y="488" class="vp-msg-label">9: deploymentReceipt(contractAddress)</text>
+
+  <!-- ==================== PHASE 3: FORK REGISTRATION ==================== -->
+  <g transform="translate(45, 535)">
+    <polygon points="0,0 230,0 245,15 245,32 0,32" class="vp-note-box"/>
+    <polygon points="230,0 230,15 245,15" class="vp-note-fold"/>
+    <text x="14" y="21" class="vp-note-text">Phase 3: Fork Creation &amp; Registration</text>
+  </g>
+
+  <!-- 10: operator -> forkNode: launchForkNode -->
+  <line x1="110" y1="580" x2="964" y2="580" class="vp-msg-sync"/>
+  <text x="180" y="573" class="vp-msg-label">10: launchForkNode(parentChainId)</text>
+
+  <!-- forkNode Activation 1 -->
+  <rect x="964" y="580" width="12" height="35" class="vp-activation"/>
+  <line x1="964" y1="610" x2="110" y2="610" class="vp-msg-reply"/>
+  <text x="180" y="603" class="vp-msg-label">11: forkNodeReady()</text>
+
+  <!-- Client Activation 2 -->
+  <rect x="324" y="635" width="12" height="145" class="vp-activation"/>
+
+  <!-- 12: client -> registry: addFork -->
+  <line x1="336" y1="645" x2="764" y2="645" class="vp-msg-sync"/>
+  <text x="360" y="638" class="vp-msg-label">12: addFork(networkId, parentNetworkId)</text>
+
+  <!-- registry Activation 2 -->
+  <rect x="764" y="645" width="12" height="70" class="vp-activation"/>
+
+  <!-- Self call on registry -->
+  <path d="M 776 665 L 820 665 L 820 685 L 778 685" class="vp-msg-self"/>
+  <text x="825" y="678" class="vp-msg-label">13: recordFork &amp; updateTopology()</text>
+
+  <!-- 14: registry -> client: emit ForkAdded -->
+  <line x1="764" y1="710" x2="336" y2="710" class="vp-msg-reply"/>
+  <text x="360" y="703" class="vp-msg-label">14: emit ForkAdded(forkId, networkId)</text>
+
+  <!-- 15: client -> registry: getForkCount -->
+  <line x1="336" y1="745" x2="764" y2="745" class="vp-msg-sync"/>
+  <text x="360" y="738" class="vp-msg-label">15: getForkCount()</text>
+
+  <!-- registry Activation 3 -->
+  <rect x="764" y="745" width="12" height="30" class="vp-activation"/>
+  <line x1="764" y1="770" x2="336" y2="770" class="vp-msg-reply"/>
+  <text x="360" y="763" class="vp-msg-label">16: return totalForks</text>
+
+  <!-- ==================== PHASE 4: PATHFINDING & INTERACTION ==================== -->
+  <g transform="translate(45, 810)">
+    <polygon points="0,0 260,0 275,15 275,32 0,32" class="vp-note-box"/>
+    <polygon points="260,0 260,15 275,15" class="vp-note-fold"/>
+    <text x="14" y="21" class="vp-note-text">Phase 4: Lineage Discovery &amp; Interaction</text>
+  </g>
+
+  <!-- Client Activation 3 -->
+  <rect x="324" y="845" width="12" height="255" class="vp-activation"/>
+
+  <!-- 17: client -> registry: findPath -->
+  <line x1="336" y1="855" x2="764" y2="855" class="vp-msg-sync"/>
+  <text x="360" y="848" class="vp-msg-label">17: findPath(sourceChainId, targetChainId)</text>
+
+  <!-- registry Activation 4 -->
+  <rect x="764" y="855" width="12" height="40" class="vp-activation"/>
+  <line x1="764" y1="890" x2="336" y2="890" class="vp-msg-reply"/>
+  <text x="360" y="883" class="vp-msg-label">18: return lineagePath</text>
+
+  <!-- 19: client -> registry: getForkDetails -->
+  <line x1="336" y1="930" x2="764" y2="930" class="vp-msg-sync"/>
+  <text x="360" y="923" class="vp-msg-label">19: getForkDetails(forkId)</text>
+
+  <!-- registry Activation 5 -->
+  <rect x="764" y="930" width="12" height="35" class="vp-activation"/>
+  <line x1="764" y1="960" x2="336" y2="960" class="vp-msg-reply"/>
+  <text x="360" y="953" class="vp-msg-label">20: return endpointDetails</text>
+
+  <!-- 21: client -> forkNode: connectToChain -->
+  <line x1="336" y1="1005" x2="964" y2="1005" class="vp-msg-sync"/>
+  <text x="360" y="998" class="vp-msg-label">21: connectToChain(endpoint)</text>
+
+  <!-- forkNode Activation 2 -->
+  <rect x="964" y="1005" width="12" height="90" class="vp-activation"/>
+
+  <!-- 22: client -> forkNode: queryChainState -->
+  <line x1="336" y1="1045" x2="964" y2="1045" class="vp-msg-sync"/>
+  <text x="360" y="1038" class="vp-msg-label">22: queryChainState()</text>
+
+  <!-- 23: forkNode -> client: return state -->
+  <line x1="964" y1="1085" x2="336" y2="1085" class="vp-msg-reply"/>
+  <text x="360" y="1078" class="vp-msg-label">23: return accounts &amp; state</text>
+
+  <!-- ==================== PARTICIPANTS (BOTTOM) ==================== -->
+  <g transform="translate(110, 1165)">
+    <text x="0" y="20" class="vp-participant-text">operator : NodeOperator</text>
+  </g>
+  <rect x="245" y="1160" width="170" height="35" rx="4" ry="4" class="vp-participant-box"/>
+  <text x="330" y="1182" class="vp-participant-text">client : ClientApplication</text>
+
+  <rect x="465" y="1160" width="170" height="35" rx="4" ry="4" class="vp-participant-box"/>
+  <text x="550" y="1182" class="vp-participant-text">rootNode : RootBlockchain</text>
+
+  <rect x="680" y="1160" width="180" height="35" rx="4" ry="4" class="vp-participant-box"/>
+  <text x="770" y="1182" class="vp-participant-text">registry : MetadataBlockchain</text>
+
+  <rect x="885" y="1160" width="170" height="35" rx="4" ry="4" class="vp-participant-box"/>
+  <text x="970" y="1182" class="vp-participant-text">forkNode : ForkedBlockchain</text>
+</svg>
