@@ -1,0 +1,29 @@
+{
+  "name": "blockchain-fork-tree",
+  "version": "2.0.0",
+  "description": "Tree-based repository blockchain framework for shared governance in collaborative fork ecosystems",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "node": "npx hardhat node",
+    "deploy": "npx hardhat run scripts/deploy.js --network localhost",
+    "start": "node scripts/start_all.js"
+  },
+  "keywords": [
+    "blockchain",
+    "fork-tree",
+    "ethereum",
+    "smart-contracts",
+    "hardhat",
+    "governance"
+  ],
+  "author": "Razwan Tanvir",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.0"
+  },
+  "dependencies": {
+    "ethers": "^6.13.0"
+  }
+}
