@@ -1,4 +1,4 @@
-// Frontend controller for BlockchainForkTree Studio
+// Frontend controller for BlockchainForkTree Studio (Light / Offwhite Theme)
 let provider = null;
 let signer = null;
 let contract = null;
@@ -11,7 +11,7 @@ let activeLineagePath = [];
 
 // Initialize application
 window.addEventListener("DOMContentLoaded", async () => {
-  logEvent("Application loaded. Connecting to local node...");
+  logEvent("Application loaded. Connecting to local EVM node...");
   await initEthers();
 });
 
@@ -20,48 +20,45 @@ function logEvent(msg, type = "info") {
   if (!log) return;
   const time = new Date().toLocaleTimeString();
   const line = document.createElement("div");
-  line.className = "flex items-start gap-2 text-[11px]";
-  let color = "text-slate-400";
-  if (type === "success") color = "text-emerald-400";
-  if (type === "warn") color = "text-amber-400";
-  if (type === "error") color = "text-red-400";
+  line.className = "flex items-start gap-2 text-[11px] leading-relaxed";
+  let color = "text-slate-600";
+  if (type === "success") color = "text-emerald-700 font-medium";
+  if (type === "warn") color = "text-orange-700 font-medium";
+  if (type === "error") color = "text-red-600 font-medium";
 
-  line.innerHTML = `<span class="text-slate-600">[${time}]</span> <span class="${color}">${msg}</span>`;
+  line.innerHTML = `<span class="text-slate-400 font-mono">[${time}]</span> <span class="${color}">${msg}</span>`;
   log.prepend(line);
 }
 
 async function initEthers() {
   try {
-    // 1. Fetch config.json
     const res = await fetch("config.json");
     if (!res.ok) {
       throw new Error("Could not find config.json. Has the contract been deployed?");
     }
     config = await res.json();
 
-    // 2. Connect provider
     provider = new ethers.JsonRpcProvider(config.rpcUrl);
     signer = await provider.getSigner(0);
 
     const net = await provider.getNetwork();
-    document.getElementById("connectionDot").className = "w-2.5 h-2.5 rounded-full bg-emerald-500";
+    const dot = document.getElementById("connectionDot");
+    dot.className = "w-2 h-2 rounded-full bg-emerald-600";
     document.getElementById("connectionText").innerText = `Connected (Chain ID: ${net.chainId})`;
     logEvent(`Connected to EVM node at ${config.rpcUrl}`, "success");
 
-    // 3. Connect contract
     contract = new ethers.Contract(config.contractAddress, config.abi, signer);
     logEvent(`Loaded BlockchainForkEcosystem at ${config.contractAddress}`, "success");
 
-    // 4. Attach Live Event Listeners
     setupEventListeners();
-
-    // 5. Initial data load
     await refreshData();
 
   } catch (err) {
     console.error("Initialization error:", err);
-    document.getElementById("connectionDot").className = "w-2.5 h-2.5 rounded-full bg-red-500";
-    document.getElementById("connectionText").innerText = "Connection Failed";
+    const dot = document.getElementById("connectionDot");
+    if (dot) dot.className = "w-2 h-2 rounded-full bg-red-600";
+    const text = document.getElementById("connectionText");
+    if (text) text.innerText = "Connection Failed";
     logEvent(`Connection Error: ${err.message}`, "error");
   }
 }
@@ -80,7 +77,7 @@ function setupEventListeners() {
   });
 
   contract.on("BlockAdded", (chainId, blockNumber, blockHash, timestamp, txPayload, miner) => {
-    logEvent(`EVENT: Block Added -> Chain #${chainId} mined Block #${blockNumber} ("${txPayload}")`, "success");
+    logEvent(`EVENT: Block Mined -> Chain #${chainId} mined Block #${blockNumber} ("${txPayload}")`, "success");
     refreshData();
   });
 }
@@ -139,8 +136,7 @@ async function refreshData() {
     updateSelectOptions();
     renderTree();
 
-    // If active chain selected, refresh its blocks
-    if (selectedChainId) {
+    if (selectedChainId && allChains.some(c => c.id === selectedChainId)) {
       selectChain(selectedChainId);
     } else if (allChains.length > 0) {
       selectChain(allChains[0].id);
@@ -152,7 +148,6 @@ async function refreshData() {
   }
 }
 
-// Update all dropdown selects
 function updateSelectOptions() {
   const forkParentSelect = document.getElementById("forkParentSelect");
   const mineTargetSelect = document.getElementById("mineTargetSelect");
@@ -169,7 +164,7 @@ function updateSelectOptions() {
 
   let optionsHtml = "";
   for (let c of allChains) {
-    optionsHtml += `<option value="${c.id}">Chain #${c.id}: ${c.label} (Current: Block #${c.currentBlockNumber})</option>`;
+    optionsHtml += `<option value="${c.id}">Chain #${c.id}: ${c.label} (Block #${c.currentBlockNumber})</option>`;
   }
 
   forkParentSelect.innerHTML = optionsHtml;
@@ -199,10 +194,9 @@ async function handleCreateRoot(event) {
   try {
     logEvent(`Submitting createRootChain("${label}")...`);
     const tx = await contract.createRootChain(label);
-    logEvent(`Transaction submitted: ${tx.hash.substring(0, 14)}...`);
     await tx.wait();
     document.getElementById("rootLabel").value = "";
-    logEvent(`Root chain "${label}" successfully created!`, "success");
+    logEvent(`Root chain "${label}" created successfully!`, "success");
     await refreshData();
   } catch (err) {
     console.error("Error creating root chain:", err);
@@ -226,10 +220,9 @@ async function handleCreateFork(event) {
   try {
     logEvent(`Submitting createFork(parent=${parentId}, "${label}")...`);
     const tx = await contract.createFork(Number(parentId), label);
-    logEvent(`Transaction submitted: ${tx.hash.substring(0, 14)}...`);
     await tx.wait();
     document.getElementById("forkLabel").value = "";
-    logEvent(`Fork "${label}" successfully branched!`, "success");
+    logEvent(`Fork "${label}" branched successfully!`, "success");
     await refreshData();
   } catch (err) {
     console.error("Error creating fork:", err);
@@ -253,10 +246,9 @@ async function handleMineBlock(event) {
   try {
     logEvent(`Submitting mineBlock(chain=${targetId}, "${payload}")...`);
     const tx = await contract.mineBlock(Number(targetId), payload);
-    logEvent(`Transaction mined in block: ${tx.hash.substring(0, 14)}...`);
     await tx.wait();
     document.getElementById("txPayload").value = "";
-    logEvent(`Block successfully mined on Chain #${targetId}!`, "success");
+    logEvent(`Block mined on Chain #${targetId}!`, "success");
     await refreshData();
   } catch (err) {
     console.error("Error mining block:", err);
@@ -276,7 +268,7 @@ async function handleFindPath() {
   if (!sourceId || !targetId || !contract) return;
 
   try {
-    logEvent(`Calculating path from Chain #${sourceId} to #${targetId}...`);
+    logEvent(`Tracing lineage from Chain #${sourceId} to #${targetId}...`);
     const path = await contract.findLineagePath(Number(sourceId), Number(targetId));
     activeLineagePath = path.map(p => Number(p));
 
@@ -291,10 +283,10 @@ async function handleFindPath() {
       });
       resultBox.classList.remove("hidden");
       resultText.innerText = labels.join(" ➔ ");
-      logEvent(`Lineage Path Found (${activeLineagePath.length - 1} hops): ${labels.join(" -> ")}`, "success");
+      logEvent(`Lineage Path (${activeLineagePath.length - 1} hops): ${labels.join(" -> ")}`, "success");
     }
 
-    renderTree(); // re-render to highlight active path lines
+    renderTree();
 
   } catch (err) {
     console.error("Path error:", err);
@@ -303,7 +295,7 @@ async function handleFindPath() {
 }
 
 // ==========================================
-// VISUAL RENDERING (TREE & BLOCKS)
+// VISUAL RENDERING (LIGHT THEME)
 // ==========================================
 
 function selectChain(chainId) {
@@ -314,7 +306,10 @@ function selectChain(chainId) {
   document.getElementById("selectedChainTitle").innerText = chain.label;
   const badge = document.getElementById("selectedChainBadge");
   badge.classList.remove("hidden");
-  badge.innerText = `Chain #${chain.id} (${chain.isRoot ? "Root" : "Fork"})`;
+  badge.innerText = `Chain #${chain.id} (${chain.isRoot ? "Root Chain" : "Fork Chain"})`;
+  badge.className = chain.isRoot
+    ? "text-xs px-2.5 py-0.5 rounded-full font-mono font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300"
+    : "text-xs px-2.5 py-0.5 rounded-full font-mono font-semibold bg-orange-100 text-orange-800 border border-orange-300";
 
   const metaBox = document.getElementById("selectedChainMeta");
   if (!chain.isRoot) {
@@ -324,9 +319,8 @@ function selectChain(chainId) {
     metaBox.classList.add("hidden");
   }
 
-  // Render Horizontal Blocks Ribbon
   renderBlockRibbon(chain);
-  renderTree(); // re-render to update selected ring
+  renderTree();
 }
 
 function renderBlockRibbon(chain) {
@@ -334,19 +328,18 @@ function renderBlockRibbon(chain) {
   container.innerHTML = "";
 
   if (!chain.blocks || chain.blocks.length === 0) {
-    container.innerHTML = '<div class="text-xs text-slate-500 italic">No blocks mined on this chain yet.</div>';
+    container.innerHTML = '<div class="text-xs text-slate-400 italic">No blocks mined on this chain yet.</div>';
     return;
   }
 
-  // If fork, show inherited blocks indicator
   if (!chain.isRoot) {
     const inhDiv = document.createElement("div");
-    inhDiv.className = "flex-shrink-0 px-3 py-2 rounded-xl bg-slate-950 border border-dashed border-slate-700 text-slate-400 text-xs text-center flex flex-col justify-center";
-    inhDiv.innerHTML = `<span class="font-bold text-[11px] text-blue-400">Fork Origin</span><span class="text-[10px] text-slate-500">Inherited 0..#${chain.parentForkBlockNumber}</span>`;
+    inhDiv.className = "flex-shrink-0 px-3 py-2 rounded-xl bg-orange-50 border border-dashed border-orange-300 text-orange-800 text-xs text-center flex flex-col justify-center";
+    inhDiv.innerHTML = `<span class="font-bold text-[11px] text-orange-900">Fork Origin</span><span class="text-[10px] text-orange-700">Inherited 0..#${chain.parentForkBlockNumber}</span>`;
     container.appendChild(inhDiv);
 
     const arrow = document.createElement("div");
-    arrow.className = "text-slate-600 font-bold";
+    arrow.className = "text-slate-400 font-bold";
     arrow.innerText = "➔";
     container.appendChild(arrow);
   }
@@ -356,22 +349,24 @@ function renderBlockRibbon(chain) {
     const isSelected = selectedBlockNumber === b.blockNumber;
     card.className = `flex-shrink-0 p-3 rounded-xl border cursor-pointer transition select-none min-w-[130px] ${
       isSelected
-        ? "bg-blue-600/20 border-blue-500 text-white shadow-md shadow-blue-500/10"
-        : "bg-slate-950 border-slate-800 hover:border-slate-700 text-slate-300"
+        ? "bg-orange-50 border-orange-500 text-orange-950 shadow-sm"
+        : "bg-slate-50 border-slate-200 hover:border-slate-300 text-slate-800"
     }`;
     card.onclick = () => inspectBlock(chain, b);
 
     card.innerHTML = `
       <div class="flex items-center justify-between gap-1 mb-1">
-        <span class="font-mono font-bold text-xs ${b.blockNumber === 0 ? "text-emerald-400" : "text-blue-400"}">
+        <span class="font-mono font-bold text-xs ${b.blockNumber === 0 ? "text-emerald-700" : "text-orange-700"}">
           Block #${b.blockNumber}
         </span>
-        <span class="text-[10px] px-1.5 py-0.2 rounded bg-slate-800 text-slate-400">${b.blockNumber === 0 ? "Genesis" : "Mined"}</span>
+        <span class="text-[10px] px-1.5 py-0.2 rounded-full font-semibold ${b.blockNumber === 0 ? "bg-emerald-100 text-emerald-800" : "bg-slate-200 text-slate-700"}">
+          ${b.blockNumber === 0 ? "Genesis" : "Mined"}
+        </span>
       </div>
-      <div class="text-[11px] font-sans truncate text-slate-400 max-w-[120px]" title="${b.txPayload}">
+      <div class="text-[11px] font-sans truncate text-slate-600 max-w-[120px]" title="${b.txPayload}">
         ${b.txPayload}
       </div>
-      <div class="text-[10px] font-mono text-slate-600 mt-1 truncate">
+      <div class="text-[10px] font-mono text-slate-400 mt-1 truncate">
         ${b.blockHash.substring(0, 10)}...
       </div>
     `;
@@ -380,13 +375,12 @@ function renderBlockRibbon(chain) {
 
     if (index < chain.blocks.length - 1) {
       const conn = document.createElement("div");
-      conn.className = "text-slate-700 text-xs";
+      conn.className = "text-slate-300 text-xs";
       conn.innerText = "─";
       container.appendChild(conn);
     }
   });
 
-  // Auto-inspect the latest block
   if (chain.blocks.length > 0 && selectedBlockNumber === null) {
     inspectBlock(chain, chain.blocks[chain.blocks.length - 1]);
   }
@@ -407,14 +401,13 @@ function inspectBlock(chain, block) {
   renderBlockRibbon(chain);
 }
 
-// Render visual SVG Tree
+// Render visual SVG Tree for offwhite canvas
 function renderTree() {
   const svg = document.getElementById("treeSvg");
   if (!svg || allChains.length === 0) return;
 
   svg.innerHTML = "";
 
-  // Compute Tree Layout (Levels / Depths)
   const nodeMap = new Map();
   allChains.forEach(c => {
     nodeMap.set(c.id, {
@@ -426,7 +419,6 @@ function renderTree() {
     });
   });
 
-  // Build hierarchy
   const rootNodes = [];
   allChains.forEach(c => {
     const node = nodeMap.get(c.id);
@@ -438,15 +430,13 @@ function renderTree() {
     }
   });
 
-  // Assign depth and coordinates
-  let currentY = 50;
   function layoutNode(node, depth, yStart) {
     node.depth = depth;
-    node.x = 60 + depth * 180;
+    node.x = 40 + depth * 190;
     node.y = yStart;
 
     let childY = yStart;
-    node.children.forEach((child, i) => {
+    node.children.forEach((child) => {
       layoutNode(child, depth + 1, childY);
       childY += 75;
     });
@@ -454,7 +444,7 @@ function renderTree() {
     return Math.max(yStart + 75, childY);
   }
 
-  let curY = 50;
+  let curY = 40;
   rootNodes.forEach(r => {
     curY = layoutNode(r, 0, curY);
   });
@@ -470,10 +460,10 @@ function renderTree() {
       const isPathActive = activeLineagePath.includes(parent.chain.id) && activeLineagePath.includes(child.chain.id);
 
       const pathEl = document.createElementNS("http://www.w3.org/2000/svg", "path");
-      const d = `M ${parent.x + 80} ${parent.y + 20} C ${parent.x + 130} ${parent.y + 20}, ${child.x - 50} ${child.y + 20}, ${child.x} ${child.y + 20}`;
+      const d = `M ${parent.x + 140} ${parent.y + 23} C ${parent.x + 175} ${parent.y + 23}, ${child.x - 35} ${child.y + 23}, ${child.x} ${child.y + 23}`;
       pathEl.setAttribute("d", d);
       pathEl.setAttribute("fill", "none");
-      pathEl.setAttribute("stroke", isPathActive ? "#3b82f6" : "#334155");
+      pathEl.setAttribute("stroke", isPathActive ? "#ea580c" : "#cbd5e1");
       pathEl.setAttribute("stroke-width", isPathActive ? "3.5" : "1.8");
       if (isPathActive) {
         pathEl.classList.add("lineage-active");
@@ -482,7 +472,7 @@ function renderTree() {
     }
   });
 
-  // 2. Draw Nodes
+  // 2. Draw Nodes (Green for Root, Orange for Fork)
   nodeMap.forEach(n => {
     const isSelected = selectedChainId === n.chain.id;
     const isPathNode = activeLineagePath.includes(n.chain.id);
@@ -498,27 +488,30 @@ function renderTree() {
     rect.setAttribute("width", 140);
     rect.setAttribute("height", 46);
     rect.setAttribute("rx", 10);
-    rect.setAttribute("fill", n.chain.isRoot ? "#064e3b" : "#1e3a8a");
-    rect.setAttribute("stroke", isSelected ? "#60a5fa" : (isPathNode ? "#a855f7" : "#3b82f6"));
-    rect.setAttribute("stroke-width", isSelected ? "2.5" : "1.2");
+
+    // Green for Root, Orange for Fork
+    const fillColor = n.chain.isRoot ? "#047857" : "#ea580c";
+    rect.setAttribute("fill", fillColor);
+    rect.setAttribute("stroke", isSelected ? "#000000" : (isPathNode ? "#000000" : (n.chain.isRoot ? "#065f46" : "#c2410c")));
+    rect.setAttribute("stroke-width", isSelected ? "3" : "1.5");
     if (isSelected) {
       rect.classList.add("node-pulse");
     }
 
     // Label Text
     const textLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    textLabel.setAttribute("x", n.x + 10);
+    textLabel.setAttribute("x", n.x + 12);
     textLabel.setAttribute("y", n.y + 19);
     textLabel.setAttribute("fill", "#ffffff");
     textLabel.setAttribute("font-size", "11px");
     textLabel.setAttribute("font-weight", "bold");
-    textLabel.textContent = n.chain.label.length > 16 ? n.chain.label.substring(0, 15) + "..." : n.chain.label;
+    textLabel.textContent = n.chain.label.length > 15 ? n.chain.label.substring(0, 14) + "..." : n.chain.label;
 
     // Subtitle Text (Chain ID & Block Height)
     const textSub = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    textSub.setAttribute("x", n.x + 10);
-    textSub.setAttribute("y", n.y + 36);
-    textSub.setAttribute("fill", "#94a3b8");
+    textSub.setAttribute("x", n.x + 12);
+    textSub.setAttribute("y", n.y + 35);
+    textSub.setAttribute("fill", n.chain.isRoot ? "#d1fae5" : "#ffedd5");
     textSub.setAttribute("font-size", "10px");
     textSub.setAttribute("font-family", "monospace");
     textSub.textContent = `ID #${n.chain.id} | B#${n.chain.currentBlockNumber}`;
